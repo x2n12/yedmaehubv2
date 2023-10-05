@@ -34,12 +34,7 @@ local Window = Rayfield:CreateWindow({
     Content = "กากไม่กากบอกกูด้วยจะไดเ้แก้",
     Duration = 5,
     Image = nil,
-    Actions = { -- Notification Buttons
-       Ignore = {
-          Name = "เออ!",
-          Callback = function()
-          print("The user tapped Okay!")
-       end
+     end
     },
  },
  })
