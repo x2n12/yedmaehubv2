@@ -246,15 +246,6 @@ end
     end,
  })
 
-local Toggle = MiscTab:CreateToggle({
-    Name = "KeyBoard",
-    CurrentValue = false,
-    Flag = "toggleexample", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-    Callback = function(Value)
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/advxzivhsjjdhxhsidifvsh/mobkeyboard/main/main.txt", true))()
-
-    end,
- })
  local InfoTab = Window:CreateTab("Info", nil) -- Title, Image
  local Section = InfoTab:CreateSection("Discord")
  local Button = InfoTab:CreateButton({
