@@ -73,11 +73,11 @@ local function startAutoParry()
             return math.huge
         end
         
-        local distanceToBeCovered = distanceToPlayer - 40
+        local distanceToBeCovered = distanceToPlayer - 20
         return distanceToBeCovered / velocityTowardsPlayer
     end
 
-    local BASE_THRESHOLD = 0.15
+    local BASE_THRESHOLD = 0.13
     local VELOCITY_SCALING_FACTOR = 0.002
 
     local function getDynamicThreshold(ballVelocityMagnitude)
@@ -99,7 +99,7 @@ local function startAutoParry()
         local ball = focusedBall
         local distanceToPlayer = (ball.Position - charPos).Magnitude
 
-        if distanceToPlayer < 10 then
+        if distanceToPlayer < 9 then
             parryButtonPress:Fire()
             return
         end
@@ -196,58 +196,6 @@ Balls.ChildAdded:Connect(function(Ball)
         end
     end)
 end)
-
-AutoParry:CreateToggle({
-    Name = "Auto Parry 2",
-    CurrentValue = false, 
-    Flag = "Toggle2",
-    Callback = function(value)
-        isAutoParryEnabled = value
-    end
-})
-
-
-getgenv().god = false
-
-local function ToggleGod(value)
-    getgenv().god = value
-    if value then
-        while getgenv().god and task.wait() do
-            for _,ball in next, workspace.Balls:GetChildren() do
-                if ball then
-                    if game:GetService("Players").LocalPlayer.Character and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position, ball.Position)
-                        if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Highlight") then
-                            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = ball.CFrame * CFrame.new(10, -10, (ball.Velocity).Magnitude * -0.140)
-                            game:GetService("ReplicatedStorage").Remotes.ParryButtonPress:Fire()
-                        end
-                    end
-                end
-            end
-        end
-    end
-end
-
-AutoParry:CreateToggle({
-    Name = "Rage Auto Parry",
-    CurrentValue = false, 
-    Flag = "Toggle223",
-    Callback = ToggleGod
-})
-
-while getgenv().god and task.wait() do
-    for _,ball in next, workspace.Balls:GetChildren() do
-        if ball then
-            if game:GetService("Players").LocalPlayer.Character and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position, ball.Position)
-                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Highlight") then
-                    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = ball.CFrame * CFrame.new(10, -10, (ball.Velocity).Magnitude * -0.140)
-                    game:GetService("ReplicatedStorage").Remotes.ParryButtonPress:Fire()
-                end
-            end
-        end
-    end
-end
 
 local Skill = Window:CreateTab("Skills", 13014537525)
 
