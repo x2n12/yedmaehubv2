@@ -26,19 +26,6 @@ local Window = Rayfield:CreateWindow({
     }
  })
 
- local MainTab = Window:CreateTab("Home", nil) -- Title, Image
- local MainSection = MainTab:CreateSection("Main")
-
- Rayfield:Notify({
-    Title = "กูทําตั้งนาน",
-    Content = "กากไม่กากบอกกูด้วยจะไดเ้แก้",
-    Duration = 5,
-    Image = nil,
-     end
-    },
- },
- })
-
  local Button = MainTab:CreateButton({
     Name = "Auto Parry V1",
     Callback = function()
