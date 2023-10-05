@@ -22,7 +22,7 @@ local Window = Rayfield:CreateWindow({
        FileName = "examplehubkey", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
        SaveKey = false, -- The user's key will be saved, but if you change the key, they will be unable to use your script
        GrabKeyFromSite = True, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
-       Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+       Key = {"ambuttucum"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
     }
  })
 
@@ -258,61 +258,24 @@ local Toggle = MiscTab:CreateToggle({
  local InfoTab = Window:CreateTab("Info", nil) -- Title, Image
  local Section = InfoTab:CreateSection("Discord")
  local Button = InfoTab:CreateButton({
-    Name = "Vinhsimulator1#9359",
+    Name = "yedmaehub v425228525525252",
     Callback = function()
-        print("hi")
+        print("ดีครับไอแก่")
     end,
  })
 
  local Section = InfoTab:CreateSection("Name Roblox")
  local Button = InfoTab:CreateButton({
-    Name = "Vinhsimulator1",
+    Name = "สุดหล่อคนเดียวในดิสอะ",
     Callback = function()
-        print("hi")
+        print("ดีครับไอแก่")
     end,
  })
 
  local Section = InfoTab:CreateSection("My Discord Sever")
  local Button = InfoTab:CreateButton({
-    Name = "https://discord.gg/unMBP9pW",
+    Name = "https://discord.gg/GBbQMaDGZ7",
     Callback = function()
-        print("hi")
-    end,
- })
-
- local MorehackTab = Window:CreateTab("MoreHack", nil) -- Title, Image
- local Button = MorehackTab:CreateButton({
-    Name = "Lightux Hub",
-    Callback = function()
-        loadstring(game:HttpGet(('https://raw.githubusercontent.com/zeuise0002/SSSWWW222/main/README.md'),true))()
-    end,
- })
-
-local Button = MorehackTab:CreateButton({
-    Name = "Yon-Script (NoUpdate)",
-    Callback = function()
-       print("hello")
-    end,
- })
-
-local Button = MorehackTab:CreateButton({
-    Name = "V2-Script Hub",
-    Callback = function()
-       repeat wait() until game:IsLoaded()
-       loadstring(game:HttpGet("https://raw.githubusercontent.com/Binintrozza/yutv2e/main/afss"))()
-    end,
- })
-
- local Button = MorehackTab:CreateButton({
-    Name = "BingBong Hub",
-    Callback = function()
-       loadstring(game:HttpGet("https://raw.githubusercontent.com/ToTaiVn/BingBong/main/AllGames"))()
-    end,
- })
-
- local Button = MorehackTab:CreateButton({
-    Name = "Kidachi Hub",
-    Callback = function()
-       loadstring(game:HttpGet("https://raw.githubusercontent.com/KidichiHB/Kidachi/main/Scripts/BladeBall"))()
+        print("ดีครับไอแก่")
     end,
  })
