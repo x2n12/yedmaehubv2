@@ -30,13 +30,13 @@ local Window = Rayfield:CreateWindow({
  local MainSection = MainTab:CreateSection("Main")
 
  Rayfield:Notify({
-    Title = "KichHoatScriptThanhCong",
-    Content = "Thank Vi Da Su Dung",
+    Title = "กูทําตั้งนาน",
+    Content = "กากไม่กากบอกกูด้วยจะไดเ้แก้",
     Duration = 5,
     Image = nil,
     Actions = { -- Notification Buttons
        Ignore = {
-          Name = "CamOn!",
+          Name = "เออ!",
           Callback = function()
           print("The user tapped Okay!")
        end
