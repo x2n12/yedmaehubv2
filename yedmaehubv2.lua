@@ -1,254 +1,397 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
+local workspace = game:GetService("Workspace")
+local players = game:GetService("Players")
+local localPlayer = players.LocalPlayer
+local UserInputService = game:GetService("UserInputService")
+local replicatedStorage = game:GetService("ReplicatedStorage")
+local heartbeatConnection
+
 local Window = Rayfield:CreateWindow({
-    Name = "เย็ดแม่hub",
-    LoadingTitle = "เกแก่",
-    LoadingSubtitle = "by คนหล่อ",
-    ConfigurationSaving = {
-       Enabled = false,
-       FolderName = nil, -- Create a custom folder for your hub/game
-       FileName = "BLadeBallVinh"
-    },
-    Discord = {
-       Enabled = true,
-       Invite = "เย็ดแม่hub", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/GBbQMaDGZ7 would be GBbQMaDGZ7
-       RememberJoins = true -- Set this to false to make them join the discord every time they load it up
-    },
-    KeySystem = true, -- Set this to true to use our key system
-    KeySettings = {
-       Title = "เย็ดแม่ Blade ball | Key",
-       Subtitle = "Key In Discord Server!",
-       Note = "Join Server From Misc Tab",
-       FileName = "examplehubkey", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
-       SaveKey = false, -- The user's key will be saved, but if you change the key, they will be unable to use your script
-       GrabKeyFromSite = True, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
-       Key = {"ambuttucum"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
-    }
- })
+   Name = "YEDMAE HUB",
+   LoadingTitle = "YEDMAE HUB",
+   LoadingSubtitle = "THX FOR SUPPORT",
+   ConfigurationSaving = {
+      Enabled = false,
+      FolderName = "Universe Hub",
+      FileName = "Universe Hub"
+   },
+   Discord = {
+      Enabled = true,
+      Invite = "GBbQMaDGZ7",
+      RememberJoins = true
+   },
+   KeySystem = true,
+   KeySettings = {
+      Title = "YEDMAE HUB",
+      Subtitle = "BLADE BALL SCRIPT",
+      Note = "PUT KEY IN tHIS SPACE",
+      FileName = "KEY YEDMAE",
+      SaveKey = TRUE,
+      GrabKeyFromSite = false,
+      Key = "ambuttucum"
+   }
+})
 
- local Button = MainTab:CreateButton({
-    Name = "Auto Parry V1",
-    Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/1f0yt/community/main/Circle"))()
-    end,
- })
+local AutoParry = Window:CreateTab("Main", 13014537525)
+
+local function startAutoParry()
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local replicatedStorage = game:GetService("ReplicatedStorage")
+    local runService = game:GetService("RunService")
+    local parryButtonPress = replicatedStorage.Remotes.ParryButtonPress
+    local ballsFolder = workspace:WaitForChild("Balls")
 
 
- local Slider = MainTab:CreateSlider({
-    Name = "Range (TamDanh)",
-    Range = {0, 50},
-    Increment = 10,
-    Suffix = "Range",
-    CurrentValue = 1,
-    Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-    Callback = function(Value)
-    -- The function that takes place when the slider changes
-    -- The variable (Value) is a number which correlates to the value the slider is currently at
-    end,
- })
-
- local Button = MainTab:CreateButton({
-    Name = "Auto Parry V2",
-    Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Hosvile/Refinement/main/MC%3ABlade%20Ball%20Parry%20V4.0.0",true))()
-    end,
- })
-
- local Toggle = MainTab:CreateToggle({
-    Name = "AutoRange",
-    CurrentValue = false,
-    Flag = "toggleexample", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-    Callback = function(Value)
-    -- The function that takes place when the toggle is pressed
-    -- The variable (Value) is a boolean on whether the toggle is true or false
-    end,
- })
-
- local Toggle = MainTab:CreateToggle({
-    Name = "Change Any Ability",
-    CurrentValue = false,
-    Flag = "toggleexample", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-    Callback = function(Value)
-    local localPlayer = game.Players.LocalPlayer
-local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
-local abilitiesFolder = character:WaitForChild("Abilities")
-
-local ChosenAbility = "Raging Deflection"
-
-local function createGUI()
-    local screenGui = Instance.new("ScreenGui")
-    screenGui.Name = "AbilityChooser"
-    screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-
-    local frame = Instance.new("Frame")
-    frame.Size = UDim2.new(0, 200, 0, 250)
-    frame.Position = UDim2.new(0.5, -100, 0.5, -125)
-    frame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-    frame.BorderSizePixel = 0
-    frame.Parent = screenGui
-
-    local isDragging = false
-    local dragInput
-    local dragStart
-    local startPos
-
-    local function update(input)
-        local delta = input.Position - dragStart
-        frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    local function onCharacterAdded(newCharacter)
+        character = newCharacter
     end
 
-    frame.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            isDragging = true
-            dragStart = input.Position
-            startPos = frame.Position
+    player.CharacterAdded:Connect(onCharacterAdded)
 
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    isDragging = false
-                end
-            end)
+    local focusedBall = nil  
+
+    local function chooseNewFocusedBall()
+        local balls = ballsFolder:GetChildren()
+        focusedBall = nil
+        for _, ball in ipairs(balls) do
+            if ball:GetAttribute("realBall") == true then
+                focusedBall = ball
+                break
+            end
         end
-    end)
+    end
 
-    frame.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement then
-            dragInput = input
-        end
-    end)
+    chooseNewFocusedBall()
 
-    game:GetService("UserInputService").InputChanged:Connect(function(input)
-        if input == dragInput and isDragging then
-            update(input)
-        end
-    end)
-
-    local abilities = {"Dash", "Forcefield", "Invisibility", "Platform", "Raging Deflection", "Shadow Step", "Super Jump", "Telekinesis", "Thunder Dash"}
-    local buttonHeight = 20
-    for i, ability in ipairs(abilities) do
-        local button = Instance.new("TextButton")
-        button.Size = UDim2.new(1, 0, 0, buttonHeight)
-        button.Position = UDim2.new(0, 0, 0, (i - 1) * (buttonHeight + 5))
-        button.Text = ability
-        button.BackgroundColor3 = Color3.new(0.8, 0.8, 0.8)
-        button.BorderColor3 = Color3.new(1, 1, 1)
-        button.Parent = frame
+    local function timeUntilImpact(ballVelocity, distanceToPlayer, playerVelocity)
+        local directionToPlayer = (character.HumanoidRootPart.Position - focusedBall.Position).Unit
+        local velocityTowardsPlayer = ballVelocity:Dot(directionToPlayer) - playerVelocity:Dot(directionToPlayer)
         
-        button.MouseButton1Click:Connect(function()
-            ChosenAbility = ability
-        end)
+        if velocityTowardsPlayer <= 0 then
+            return math.huge
+        end
+        
+        local distanceToBeCovered = distanceToPlayer - 40
+        return distanceToBeCovered / velocityTowardsPlayer
+    end
+
+    local BASE_THRESHOLD = 0.15
+    local VELOCITY_SCALING_FACTOR = 0.002
+
+    local function getDynamicThreshold(ballVelocityMagnitude)
+        local adjustedThreshold = BASE_THRESHOLD - (ballVelocityMagnitude * VELOCITY_SCALING_FACTOR)
+        return math.max(0.12, adjustedThreshold)
+    end
+
+    local function checkBallDistance()
+        if not character:FindFirstChild("Highlight") then return end
+        local charPos = character.PrimaryPart.Position
+        local charVel = character.PrimaryPart.Velocity
+
+        if focusedBall and not focusedBall.Parent then
+            chooseNewFocusedBall()
+        end
+
+        if not focusedBall then return end
+
+        local ball = focusedBall
+        local distanceToPlayer = (ball.Position - charPos).Magnitude
+
+        if distanceToPlayer < 10 then
+            parryButtonPress:Fire()
+            return
+        end
+
+        local timeToImpact = timeUntilImpact(ball.Velocity, distanceToPlayer, charVel)
+        local dynamicThreshold = getDynamicThreshold(ball.Velocity.Magnitude)
+
+        if timeToImpact < dynamicThreshold then
+            parryButtonPress:Fire()
+        end
+    end
+    heartbeatConnection = game:GetService("RunService").Heartbeat:Connect(function()
+        checkBallDistance()
+    end)
+end
+
+local function stopAutoParry()
+    if heartbeatConnection then
+        heartbeatConnection:Disconnect()
+        heartbeatConnection = nil
     end
 end
 
-local function onCharacterAdded(newCharacter)
-    character = newCharacter
-    abilitiesFolder = character:WaitForChild("Abilities")
-    createGUI()
+local AutoParryToggle = AutoParry:CreateToggle({
+    Name = "Auto Parry",
+    CurrentValue = false,
+    Flag = "AutoParryFlag",
+    Callback = function(Value)
+        if Value then
+            startAutoParry()
+        else
+            stopAutoParry()
+        end
+    end,
+})
+
+local Debug = false
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+
+local Player = Players.LocalPlayer or Players.PlayerAdded:Wait()
+local Remotes = ReplicatedStorage:WaitForChild("Remotes", 9e9)
+local Balls = workspace:WaitForChild("Balls", 9e9)
+
+local isAutoParryEnabled = false
+
+local function print(...)
+    if Debug then
+        warn(...)
+    end
 end
 
-localPlayer.CharacterAdded:Connect(onCharacterAdded)
-createGUI()
+local function VerifyBall(Ball)
+    if typeof(Ball) == "Instance" and Ball:IsA("BasePart") and Ball:IsDescendantOf(Balls) and Ball:GetAttribute("realBall") == true then
+        return true
+    end
+end
 
-while task.wait() do
-    for _, obj in pairs(abilitiesFolder:GetChildren()) do
-        if obj:IsA("LocalScript") then
-            if obj.Name == ChosenAbility then
-                obj.Disabled = false
-            else
-                obj.Disabled = true
+local function IsTarget()
+    return (Player.Character and Player.Character:FindFirstChild("Highlight"))
+end
+
+local function Parry()
+    if isAutoParryEnabled then
+        Remotes:WaitForChild("ParryButtonPress"):Fire()
+    end
+end
+
+Balls.ChildAdded:Connect(function(Ball)
+    if not VerifyBall(Ball) then
+        return
+    end
+
+    print(`Ball Spawned: {Ball}`)
+
+    local OldPosition = Ball.Position
+    local OldTick = tick()
+
+    Ball:GetPropertyChangedSignal("Position"):Connect(function()
+        if IsTarget() then
+            local Distance = (Ball.Position - workspace.CurrentCamera.Focus.Position).Magnitude 
+            local Velocity = (OldPosition - Ball.Position).Magnitude
+
+            print(`Distance: {Distance}\nVelocity: {Velocity}\nTime: {Distance / Velocity}`)
+
+            if (Distance / Velocity) <= 10 then
+                Parry()
+            end
+        end
+
+        if (tick() - OldTick >= 1/60) then
+            OldTick = tick()
+            OldPosition = Ball.Position
+        end
+    end)
+end)
+
+AutoParry:CreateToggle({
+    Name = "Auto Parry 2",
+    CurrentValue = false, 
+    Flag = "Toggle2",
+    Callback = function(value)
+        isAutoParryEnabled = value
+    end
+})
+
+
+getgenv().god = false
+
+local function ToggleGod(value)
+    getgenv().god = value
+    if value then
+        while getgenv().god and task.wait() do
+            for _,ball in next, workspace.Balls:GetChildren() do
+                if ball then
+                    if game:GetService("Players").LocalPlayer.Character and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position, ball.Position)
+                        if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Highlight") then
+                            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = ball.CFrame * CFrame.new(10, -10, (ball.Velocity).Magnitude * -0.140)
+                            game:GetService("ReplicatedStorage").Remotes.ParryButtonPress:Fire()
+                        end
+                    end
+                end
             end
         end
     end
 end
-    end,
- })
 
- local Dropdown = MainTab:CreateDropdown({
-    Name = "Auto Vote Map",
-    Options = {"Solo","Team2","Team4"},
-    CurrentOption = {"Random"},
-    MultipleOptions = false,
-    Flag = "Vote", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-    Callback = function(Option)
-        print(Option)
-    end,
- })
- local TeleportTab = Window:CreateTab("Teleport", nil) -- Title, Image
- local Section = TeleportTab:CreateSection("Map")
+AutoParry:CreateToggle({
+    Name = "Rage Auto Parry",
+    CurrentValue = false, 
+    Flag = "Toggle223",
+    Callback = ToggleGod
+})
 
- local Button = TeleportTab:CreateButton({
-    Name = "Teleport To Map (NotWork)",
-    Callback = function()
-    print('lobby')
-    end,
- })
- local Button = TeleportTab:CreateButton({
-    Name = "Teleport To Lobby (NotWork)",
-    Callback = function()
-    print('lobby')
-    end,
- })
+while getgenv().god and task.wait() do
+    for _,ball in next, workspace.Balls:GetChildren() do
+        if ball then
+            if game:GetService("Players").LocalPlayer.Character and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position, ball.Position)
+                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Highlight") then
+                    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = ball.CFrame * CFrame.new(10, -10, (ball.Velocity).Magnitude * -0.140)
+                    game:GetService("ReplicatedStorage").Remotes.ParryButtonPress:Fire()
+                end
+            end
+        end
+    end
+end
 
- local PlayerTab = Window:CreateTab("Player", nil) -- Title, Image
- local PlayerSection = PlayerTab:CreateSection("Character")
+local Skill = Window:CreateTab("Skills", 13014537525)
 
- local Slider = PlayerTab:CreateSlider({
-    Name = "Walkspeed Player",
-    Range = {0, 300},
-    Increment = 1,
-    Suffix = "Speed",
-    CurrentValue = 16,
-    Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-    Callback = function(Value)
-        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = (Value)
-    end,
- })
+local localPlayer = game.Players.LocalPlayer
+local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
+local abilitiesFolder = character:WaitForChild("Abilities")
 
- local Slider = PlayerTab:CreateSlider({
-    Name = "JumpPower Player",
-    Range = {0, 100},
-    Increment = 1,
-    Suffix = "Jump",
-    CurrentValue = 16,
-    Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-    Callback = function(Value)
-        game.Players.LocalPlayer.Character.Humanoid.JumpPower = (Value)
-    end,
- })
+    Skill:CreateButton({
+        Name = "Dash",
+        Callback = function()
+        ChosenAbility = "Dash"
+        end
+    })
 
- local MiscTab = Window:CreateTab("Misc", nil) -- Title, Image
- local Section = MiscTab:CreateSection("Farm")
+    Skill:CreateButton({
+        Name = "Rapture",
+        Callback = function()
+        ChosenAbility = "Rapture"
+        end
+    })
 
- local Toggle = MiscTab:CreateToggle({
-    Name = "Auto Farm",
-    CurrentValue = false,
-    Flag = "toggleexample", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-    Callback = function(Value)
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/frankblox/rbxscripts/main/0bladeball"))()
-    end,
- })
+    Skill:CreateButton({
+        Name = "Pull",
+        Callback = function()
+        ChosenAbility = "Pull"
+        end
+    })
 
- local InfoTab = Window:CreateTab("Info", nil) -- Title, Image
- local Section = InfoTab:CreateSection("Discord")
- local Button = InfoTab:CreateButton({
-    Name = "yedmaehub v425228525525252",
-    Callback = function()
-        print("ดีครับไอแก่")
-    end,
- })
+    Skill:CreateButton({
+        Name = "Phase Bypass",
+        Callback = function()
+        ChosenAbility = "Phase Bypass"
+        end
+    })
 
- local Section = InfoTab:CreateSection("Name Roblox")
- local Button = InfoTab:CreateButton({
-    Name = "สุดหล่อคนเดียวในดิสอะ",
-    Callback = function()
-        print("ดีครับไอแก่")
-    end,
- })
+    Skill:CreateButton({
+        Name = "Shadow Step",
+        Callback = function()
+        ChosenAbility = "Shadow Step"
+        end
+    })
 
- local Section = InfoTab:CreateSection("My Discord Sever")
- local Button = InfoTab:CreateButton({
-    Name = "https://discord.gg/GBbQMaDGZ7",
-    Callback = function()
-        print("ดีครับไอแก่")
-    end,
- })
+    Skill:CreateButton({
+        Name = "Wind Cloak",
+        Callback = function()
+        ChosenAbility = "Wind Cloak"
+        end
+    })
+
+    Skill:CreateButton({
+        Name = "Invisibility",
+        Callback = function()
+        ChosenAbility = "Invisibility"
+        end
+    })
+
+    Skill:CreateButton({
+        Name = "Platform",
+        Callback = function()
+        ChosenAbility = "Platform"
+        end
+    })
+
+    Skill:CreateButton({
+        Name = "Raging Deflection",
+        Callback = function()
+        ChosenAbility = "Raging Deflection"
+        end
+    })
+    Skill:CreateButton({
+        Name = "Super Jump",
+        Callback = function()
+        ChosenAbility = "Super Jump"
+        end
+    })
+    Skill:CreateButton({
+        Name = "Telekinesis",
+        Callback = function()
+        ChosenAbility = "Telekinesis"
+        end
+    })
+    Skill:CreateButton({
+        Name = "Thunder Dash",
+        Callback = function()
+        ChosenAbility = "Thunder Dash"
+        end
+    })
+
+    Skill:CreateButton({
+        Name = "Waypoint",
+        Callback = function()
+        ChosenAbility = "Waypoint"
+        end
+    })
+
+    Skill:CreateButton({
+        Name = "Infinity",
+        Callback = function()
+        ChosenAbility = "Infinity"
+        end
+    })
+
+
+local function onCharacterAdded(newCharacter)
+    character = newCharacter
+    abilitiesFolder = character:WaitForChild("Abilities")
+end
+
+localPlayer.CharacterAdded:Connect(onCharacterAdded)
+
+local function AbilityUpdater()
+    while true do
+        if abilitiesFolder then
+            for _, obj in pairs(abilitiesFolder:GetChildren()) do
+                if obj:IsA("LocalScript") then
+                    if obj.Name == ChosenAbility then
+                        obj.Disabled = false
+                    else
+                        obj.Disabled = true
+                    end
+                end
+            end
+        end
+        task.wait()
+    end
+end
+
+spawn(AbilityUpdater)
+
+AutoParry:CreateToggle({
+    Name = "Skill No CoolDown",
+    CurrentValue = false, 
+    Flag = "Toggle2",
+    Callback = function(value)
+        xx = value
+    end
+})
+
+while task.wait(2) do
+    if xx then
+        for _, obj in pairs(abilitiesFolder:GetChildren()) do
+            if obj:IsA("LocalScript") then
+                obj.Disabled = not obj.Disabled
+            end
+        end
+    end
+end 
