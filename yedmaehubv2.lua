@@ -73,16 +73,16 @@ local function startAutoParry()
             return math.huge
         end
         
-        local distanceToBeCovered = distanceToPlayer - 20
+        local distanceToBeCovered = distanceToPlayer - 13
         return distanceToBeCovered / velocityTowardsPlayer
     end
 
-    local BASE_THRESHOLD = 0.13
-    local VELOCITY_SCALING_FACTOR = 0.002
+    local BASE_THRESHOLD = 0.12
+    local VELOCITY_SCALING_FACTOR = 0.003
 
     local function getDynamicThreshold(ballVelocityMagnitude)
         local adjustedThreshold = BASE_THRESHOLD - (ballVelocityMagnitude * VELOCITY_SCALING_FACTOR)
-        return math.max(0.12, adjustedThreshold)
+        return math.max(0.13, adjustedThreshold)
     end
 
     local function checkBallDistance()
@@ -99,7 +99,7 @@ local function startAutoParry()
         local ball = focusedBall
         local distanceToPlayer = (ball.Position - charPos).Magnitude
 
-        if distanceToPlayer < 9 then
+        if distanceToPlayer < 3 then
             parryButtonPress:Fire()
             return
         end
@@ -185,7 +185,8 @@ Balls.ChildAdded:Connect(function(Ball)
 
             print(`Distance: {Distance}\nVelocity: {Velocity}\nTime: {Distance / Velocity}`)
 
-            if (Distance / Velocity) <= 10 then
+            if (Distance / Velocity) <= 20
+            then
                 Parry()
             end
         end
