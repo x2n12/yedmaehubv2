@@ -46,13 +46,13 @@ RunService.Stepped:Connect(function(Time, DeltaTime)
         if ball:GetAttribute('realBall') then
             local distance = (Player.Character.HumanoidRootPart.Position - ball.Position).Magnitude
             local ballVelocity = ball.Velocity
-            local ballMagnitude = ballVelocity.Magnitude / 3
+            local ballMagnitude = ballVelocity.Magnitude / 2
             local ballVolume = ball.Velocity.X + ball.Velocity.Y + ball.Velocity.Z
             if Visual then
                 HitboxPart.Position = Player.Character.HumanoidRootPart.Position
                 if ballVolume >= 1 then
                     HitboxPart.Size = Vector3.new(ballVolume, ballVolume, ballVolume)
-                elseif ballVolume <= 5 then
+                elseif ballVolume <= 3 then
                     HitboxPart.Size = Vector3.new(30, 30, 30)
                 else
                     HitboxPart.Size = -Vector3.new(ballVolume, ballVolume, ballVolume)
