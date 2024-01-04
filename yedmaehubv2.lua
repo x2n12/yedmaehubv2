@@ -7,7 +7,7 @@ local Remotes = {
     Parry = ReplicatedStorage.Remotes.ParryButtonPress -- // nil / no tuple FIRETYPE = :Fire()
 }
 
-local bug_ball_method_____________________________________init = false
+local bug_ball_method_____________________________________init = true
 local ParryCD = false
 local Parry = false
 local Visual = false
