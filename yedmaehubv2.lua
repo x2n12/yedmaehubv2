@@ -7,7 +7,7 @@ local Remotes = {
     Parry = ReplicatedStorage.Remotes.ParryButtonPress -- // nil / no tuple FIRETYPE = :Fire()
 }
 
-local bug_ball_method_____________________________________init = true
+local bug_ball_method_____________________________________init = false
 local ParryCD = false
 local Parry = false
 local Visual = false
@@ -33,11 +33,11 @@ local function Parry(OBJ)
     if not bug_ball_method_____________________________________init then
         Remotes.Parry:Fire()
     else
-        game.ReplicatedStorage.Remotes.ParryAttempt:FireServer(0.5, Player.Character.HumanoidRootPart.CFrame, getplayerids(), {100, 100})
+        game.ReplicatedStorage.Remotes.ParryAttempt:FireServer(0.5, Player.Character.HumanoidRootPart.CFrame, getplayerids(), {50, 50})
     end
     ParryCD = true
     OBJ:SetAttribute('target', '')
-    task.delay(.1, function()
+    task.delay(.05, function()
         ParryCD = false
     end)
 end
