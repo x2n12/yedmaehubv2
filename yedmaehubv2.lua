@@ -58,11 +58,11 @@ RunService.Stepped:Connect(function(Time, DeltaTime)
                     HitboxPart.Size = -Vector3.new(ballVolume, ballVolume, ballVolume)
                 end
             else
-                HitboxPart.Position = Vector3.new(0, 100000, 0)
+                HitboxPart.Position = Vector3.new(0, 100, 0)
             end
             if ball:GetAttribute('target') == (Player.Name or Player.DisplayName) and not ParryCD then
                 if Parry then
-                    if distance <= ballMagnitude or distance <= 5 then
+                    if distance <= ballMagnitude or distance <= 2 then
                         Parry(ball)
                     else
                         assert(true, 'if u skid u bad :grin:')
